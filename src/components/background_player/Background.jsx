@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "../../contexts/AppProvider";
 
 export default function Background(params) {
@@ -10,13 +10,17 @@ export default function Background(params) {
   const [defaultScreenHeight, setDefaultScreenHeight] = useState(0); // set default screen height
 
   const getWindowSize = useCallback(() => {
+    console.log(isFullScreen);
+    const appContainer = document.querySelector(".App");
     if (isFullScreen) {
-      const appContainer = document.querySelector(".App");
       appContainer.requestFullscreen();
+    } else {
+      document.exitFullscreen();
     }
 
     const screenWidth = window.innerWidth || 0;
     const screenHeight = window.innerHeight || 0;
+
     setDefaultScreenWidth(screenWidth);
     setDefaultScreenHeight(screenHeight);
   }, [isFullScreen]);
@@ -29,8 +33,8 @@ export default function Background(params) {
     <div
       className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]`}
       style={{
-        width: defaultScreenWidth,
-        height: defaultScreenHeight,
+        width: "100%",
+        height: "100%",
         maxWidth:
           defaultScreenHeight > defaultScreenWidth
             ? defaultScreenHeight * 2
@@ -41,7 +45,7 @@ export default function Background(params) {
         className={`absolute top-0 left-0 bottom-0 right-0 object-cover`}
         style={{
           width: "100%",
-          height: defaultScreenHeight,
+          height: "100%",
           maxWidth:
             defaultScreenHeight > defaultScreenWidth
               ? defaultScreenHeight * 2
